@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+    
+    <head>
+        <meta charset="UTF-8" />
+
+        <link rel="stylesheet" type="text/css" href= "./assets/css/style.css">
+        <title>Hangman</title>
+    
+    </head>
+
+    <body>
+
+        <div id=header>
+            <div id=header-center>
+                
+            </div>
+        </div>
+        <div id=main-background>
+                <div id=content_side>
+                        <br>
+                        <br>
+                        <h2>Press Any Key To Start 1st Game!!!</h2>
+                        <br>
+                        <br>
+                    <button id=newgame>Start New Game</button>
+                        <br>
+                        <br>
+                        <br>
+                        <p>
+                            <span id=guessline></span>
+                            <br>
+                            <br>
+                            <br>
+                            <br>
+                            Right Letters: <span id=rightletters></span>
+                            <br>
+                            <br>
+                            Wrong Letter: <span id=wrongletters></span>
+                        </p>
+                </div>
+                <div id=picture_side>
+                    <br>
+                    <span id=artist></span>
+                    <br>
+                    <div id=picture></div>
+                </div>
+        </div>
+        
+        <script type="text/javascript">
+          
+          
+
+            var answers = ["nirvana", "limpbizkit", "wutangclan", "alanismorissette", "aaliyah", "jodeci", "greenday"]
+            var bgs = ["url('./assets/images/Nirvana.jpg')", "url('./assets/images/limpbizkit.jpg')", "url('./assets/images/wutangclan.jpeg')", "url('./assets/images/alanis.jpg')", "url('./assets/images/aaliyah.jpg')", "url('./assets/images/jodeci.png')", "url('./assets/images/greenday.png')"];
+            var picHeight = ["213px", "212px", "320px", "180px", "452px", "186px", "320px"]
+            var randNum = Math.floor(Math.random()*answers.length);
+
+            var newAnswer = answers[randNum];
+            var chosenBackground = bgs[randNum]
+            var backgroundHeight = picHeight[randNum]
+            var rightButton = [];
+
+            var wrongButton = [];
+
+            document.getElementById("newgame").addEventListener("click", function() {
+                    document.location.reload(true)
+                });
+            
+            function generateUnderscore ()  {
+                var underScore = [];
+                for(var i =0; i < newAnswer.length; i++) {
+
+                    if (rightButton.includes(newAnswer[i])) {
+                        underScore.push( newAnswer[i] );
+                    } else {
+                        underScore.push("_") 
+                    }
+
+                }
+                return underScore.join(' ')
+            }
+
+            function isWinner() {
+                var winWord = generateUnderscore ()
+                if(winWord.includes("_")) {
+                    return false;
+                }
+                else {
+                    return true;
+                }
+            
+               
+            }
+
+            function reset() {
+                var randNum = Math.floor(Math.random()*answers.length);
+                newAnswer = answers[randNum];
+                chosenBackground = bgs[randNum]
+                backgroundHeight = picHeight[randNum]
+                rightButton = [];
+                wrongButton = []
+            }
+            console.log(newAnswer)
+            
+            
+
+            
+            var guessline = document.getElementById("guessline");
+            
+            guessline.innerHTML = generateUnderscore()
+            
+            document.addEventListener('keypress', (event) => {
+                var keyButton = String.fromCharCode(event.keyCode);
+
+                var rightLetters = document.getElementById("rightletters")
+                rightLetters.innerHTML = rightButton
+
+                var wrongLetters = document.getElementById("wrongletters")
+                wrongLetters.innerHTML = wrongButton
+                
+                if(newAnswer.includes(keyButton)) {
+                    
+                    rightButton.push(keyButton);
+                    console.log(rightButton);
+                }  
+                 
+                else {
+                wrongButton.push(keyButton);
+                console.log(wrongButton);
+                }
+
+                
+                var theAnswer = document.getElementById("artist");
+                var artistPicture = document.getElementById("picture");
+                var picturesUrl = ["url('./assets/images/Nirvana.jpg')", "url('./assets/images/limpbizkit.jpg')", "url('./assets/images/wutangclan.jpeg')", "url('./assets/images/alanis.jpg')", "url('./assets/images/aaliyah.jpg')", "url('./assets/images/jodeci.png')", "url('./assets/images/greenday.png')"];
+                
+                if(isWinner() ){
+                    alert("You are a winner")
+                
+                    
+                    artistPicture.style.height = backgroundHeight;
+                    artistPicture.style.backgroundImage = chosenBackground;
+                    theAnswer.innerHTML = newAnswer;
+                
+
+                        
+                    reset();
+
+                    
+                }
+
+                
+                
+                guessline.innerHTML = generateUnderscore()
+
+
+                console.log(artistPicture.style.backgroundImage)
+
+                console.log(generateUnderscore())
+                
+
+                
+                
+                
+               
+
+               
+
+            });
+          
+        </script>
+    
+
+    </body>
+</html>
